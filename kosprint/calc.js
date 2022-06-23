@@ -20,7 +20,6 @@ let price = document.querySelector('#price');
 
 
 function mainFunc() {
-
     let paper = document.querySelector('#paper');
     let dencity = document.querySelector('#dencity');
 
@@ -55,6 +54,16 @@ function mainFunc() {
     } else {
         colorBack.disabled = false;
         laminaciyaBack.disabled = false;
+    }
+
+    //При выборе самоклеек не доступна плотность
+    if (!paper.value.startsWith('Офсетный')) {
+        dencity.disabled = true;
+        dencity.value = '0';
+
+    } else {
+        dencity.disabled = false;
+        dencity.value = '80';
     }
 
 
@@ -98,31 +107,12 @@ function mainFunc() {
         width.max = "410"
         height.max = "290"
 
+        enforceMinMax(width);
+        enforceMinMax(height);
 
+    } else if (!ploternaya.checked && !format.checked) {
+        ploternaya.click();
     }
-
-    //если размер больше чем можно то ставит на максимально возможный
-    if (width.innerHTML > width.max) {
-        width.innerHTML = width.max;
-        size.value = "А3+";
-    }
-
-    if (height.innerHTML > height.max) {
-        height.innerHTML = height.max;
-        size.value = "А3+";
-    }
-
-    if (width.innerHTML < width.min) {
-        size.value = "А3+";
-        width.innerHTML = width.min;
-    }
-
-    if (height.innerHTML < height.min) {
-        size.value = "А3+";
-        height.innerHTML = height.min;
-    }
-
-
 
     //на лист сколько
 
@@ -152,10 +142,22 @@ function mainFunc() {
     })
 
     format.checked ? money += +format.getAttribute("calc") : money += +ploternaya.getAttribute("calc");
-    money*=circulation.value/innerRaskladka.childElementCount;
+    money *= circulation.value / innerRaskladka.childElementCount;
 
     price.innerHTML = money < 100 ? `100 грн.` : `${money.toFixed(2)} грн.`
 
 
 }; mainFunc();
 
+
+//если размер больше/меньше чем можно то ставит на максимально возможный
+function enforceMinMax(el) {
+    if (el.value != "") {
+        if (parseInt(el.value) < parseInt(el.min)) {
+            el.value = el.min;
+        }
+        if (parseInt(el.value) > parseInt(el.max)) {
+            el.value = el.max;
+        }
+    }
+}

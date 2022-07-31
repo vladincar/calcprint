@@ -88,8 +88,8 @@ function mainFunc() {
 
         //минимальный размер 
 
-      width.min = "35"
-      height.min = "35"
+        width.min = "35"
+        height.min = "35"
 
 
         //максимальный размер 
@@ -102,8 +102,8 @@ function mainFunc() {
 
         //минимальный размер
 
-      width.min = "10"
-      height.min = "10"
+        width.min = "10"
+        height.min = "10"
 
         //максимальный размер 
         width.max = "410"
@@ -115,8 +115,8 @@ function mainFunc() {
     } else if (!ploternaya.checked && !format.checked) {
         ploternaya.click();
     }
-    if((parseInt(width.value))<width.min)return
-        if(height.value<height.min)return
+    if ((parseInt(width.value)) < width.min) return
+    if (height.value < height.min) return
 
     //на лист сколько
 
@@ -127,17 +127,19 @@ function mainFunc() {
     innerRaskladka.innerHTML = '';
     for (x = 0; x < cardsAmount; x++) {
         let div = document.createElement("div");
-        div.style.width = delMin>parseInt(width.value)?delMin + 'px':width.value+ 'px';
-        div.style.height = delMin>parseInt(height.value)?delMin + 'px':height.value+ 'px';
+        //если меньше минимального то не ставит на разметку ничего
+        div.style.width = delMin > parseInt(width.value) ? delMin + 'px' : width.value + 'px';
+        div.style.height = delMin > parseInt(height.value) ? delMin + 'px' : height.value + 'px';
+        //
         innerRaskladka.appendChild(div);
     }
 
     //если дети выходят за пределы листа то удаляем их
+    let deletedDivs = innerRaskladka.childElementCount;
     while (innerRaskladka.getBoundingClientRect().bottom < innerRaskladka.lastElementChild.getBoundingClientRect().bottom) {
         innerRaskladka.removeChild(innerRaskladka.lastElementChild);
     }
-
-
+    deletedDivs-=innerRaskladka.childElementCount
     /////////////СЧИТАТЬ СТОИМОСТЬ
     let money = 0;
     select.forEach(x => {
@@ -145,7 +147,9 @@ function mainFunc() {
     })
 
     format.checked ? money += +format.getAttribute("calc") : money += +ploternaya.getAttribute("calc");
-    money *= circulation.value / innerRaskladka.childElementCount;
+    let amountOfPages =circulation.value / innerRaskladka.childElementCount;
+    console.log(Math.ceil(deletedDivs*amountOfPages/innerRaskladka.childElementCount))
+    money *= circulation.value / (Math.ceil(deletedDivs*amountOfPages/innerRaskladka.childElementCount)+amountOfPages);
 
     price.innerHTML = money < 100 ? `100 грн.` : `${money.toFixed(2)} грн.`
 
@@ -157,8 +161,8 @@ function mainFunc() {
 function enforceMinMax(el) {
     if (el.value != "") {
         if (parseInt(el.value) < parseInt(el.min)) {
-           // el.value = el.min;
-           delMin=el.min;
+            // el.value = el.min;
+            delMin = el.min;
         }
         if (parseInt(el.value) > parseInt(el.max)) {
             el.value = el.max;

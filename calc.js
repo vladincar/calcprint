@@ -150,7 +150,7 @@ function mainFunc() {
     
     money *= Math.ceil(circulation.value / innerRaskladka.childElementCount);
 
-    price.innerHTML = money < 100 ? `100 грн.` : `${money.toFixed(2)} грн.`
+    price.innerHTML = money < 100 ? `100 грн.` : `${money.toFixed(0)} грн.`
 
 
 }; mainFunc();

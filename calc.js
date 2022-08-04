@@ -147,9 +147,8 @@ function mainFunc() {
     })
 
     format.checked ? money += +format.getAttribute("calc") : money += +ploternaya.getAttribute("calc");
-    let amountOfPages =circulation.value / innerRaskladka.childElementCount;
-    console.log(Math.ceil(deletedDivs*amountOfPages/innerRaskladka.childElementCount))
-    money *= circulation.value / (Math.ceil(deletedDivs*amountOfPages/innerRaskladka.childElementCount)+amountOfPages);
+    
+    money *= Math.ceil(circulation.value / innerRaskladka.childElementCount);
 
     price.innerHTML = money < 100 ? `100 грн.` : `${money.toFixed(2)} грн.`
 

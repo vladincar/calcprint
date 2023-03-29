@@ -146,7 +146,8 @@ function mainFunc() {
         cardsAmount = widthAmountReversed*heightAmountReversed;
         checkIfReversed=true;
     }else checkIfReversed=false;
-
+//Write how many cards fit on one paper
+document.querySelector('.visual h2').innerHTML=`Розкладка <span style="font-size:18px">(${cardsAmount}шт/лист)</span>`
 
     innerRaskladka.innerHTML = '';
     for (x = 0; x < cardsAmount; x++) {
@@ -225,11 +226,4 @@ let formText = `<div class="forminator-field forminator-merge-tags">
 
 let formInfo = document.querySelector('.formInfo');
 formInfo.innerHTML = formText;
-
-//form appear onclick
-const form = document.querySelector('.elementor-section.elementor-top-section.elementor-element.elementor-element-b5a8f4b.elementor-section-boxed.elementor-section-height-default.elementor-section-height-default');
-
-function formBtn(){
-    form.classList.toggle('elementorFormCustom')
-}
 }, 100);
